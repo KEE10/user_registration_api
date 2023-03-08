@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+databases
+# psycopg2
+psycopg2-binary
+fastapi_mail

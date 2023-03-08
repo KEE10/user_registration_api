@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: ./app
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_HOST=database
+      - DB_PORT=5432
+      - DB_NAME=UserRegistration
+      - DB_USER_TABLE_NAME=Users
+      - DB_USER=UserRegistrationService
+      - DB_PASSWORD=mypassword
+      - MAIL_SERVER=mail
+      - MAIL_PORT=1025
+      - MAIL_USERNAME=myuser
+      - MAIL_PASSWORD=mypassword
+    depends_on:
+      - database
+      - mail
+    volumes:
+      - ./app:/app
+
+  database:
+    build:
+      context: ./database
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB_NAME=UserRegistration
+      - POSTGRES_USERS_TABLE_NAME=Users
+      - POSTGRES_USER=UserRegistrationService
+      - POSTGRES_PASSWORD=mypassword
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  mail:
+    build:
+      context: ./smtp
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+volumes:
+  postgres_data:
